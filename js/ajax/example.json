@@ -1,0 +1,173 @@
+[{
+    "Name": "Modbus",
+    "Description": "A beautiful desc",
+    "Path" : "PATH/TO/EXEC",
+    "config":{
+        "ramMax" : "800M",
+        "lstBox":[{
+            "Address": "172.24.25.14",
+            "Name": "Adam",
+            "lstSensor":[{
+                "Address": 81,
+                "Description": "Relay 1",
+                "Enable": false,
+                "Name": "RelayTEst",
+                "SensorType": "Relay"
+            },
+              {
+                "Address": 42,
+                "Description": "Relay56461",
+                "Enable": false,
+                "Name": "RelayTssssst",
+                "SensorType": "Relsssay"
+              }]
+        },{
+            "Address": "172.24.25.14",
+            "Name": "Energetic",
+            "lstSensor":[{
+                "Address": 6,
+                "Description": "Relay 67",
+                "Enable": true,
+                "Name": "RelayTEst",
+                "SensorType": "Relay"
+            }]
+        }]
+    },
+    "entities":{
+        "ramMax" :
+          {
+            "type" : "STRING",
+            "required" : true
+          },
+        "lstBox":[
+          {
+            "Address" :
+            {
+                "type" : "STRING",
+                "required" : true
+            },
+            "Name" :
+            {
+              "type" : "STRING",
+              "required" : true
+            },
+          "lstSensor":
+          [{
+            "Address": {
+              "type" : "NUMBER",
+              "required" : true
+            },
+            "Description": {
+              "type" : "STRING",
+              "required" : true
+            },
+            "Enable": {
+              "type" : "BOOLEAN",
+              "required" : true
+            },
+            "Name": {
+              "type" : "STRING",
+              "required" : true
+            },
+            "SensorType": {
+              "type" : "STRING",
+              "required" : true,
+              "values" : [
+                "DIGITAL",
+                "ANALOG"
+              ]
+            }
+          }]
+        }],
+        "Box" :
+        {
+          "type" : "STRING",
+          "required" : true,
+          "values" : {
+            "property" : "lstBox",
+            "attribute" : "name.toto.titi"
+          }
+        }
+    }
+
+    },
+  {
+    "Name": "RFID",
+    "Description": "A beautiful deskb for RFID",
+    "Path" : "PATH/TO/EXEC",
+    "config":{
+      "ramMax" : "10000M",
+      "lstBox":[{
+        "Address": "172.24.25.14",
+        "Name": "Adam",
+        "lstSensor":[{
+          "Address": 81,
+          "Description": "Relay 1",
+          "Enable": false,
+          "Name": "RelayTEst",
+          "SensorType": "Relay"
+        },
+          {
+            "Address": 42,
+            "Description": "Relay56461",
+            "Enable": false,
+            "Name": "RelayTssssst",
+            "SensorType": "Relsssay"
+          }]
+      },{
+        "Address": "172.24.25.14",
+        "Name": "Energetic",
+        "lstSensor":[{
+          "Address": 6,
+          "Description": "Relay 67",
+          "Enable": true,
+          "Name": "RelayTEst",
+          "SensorType": "Relay"
+        }]
+      }]
+    },
+    "entities":{
+      "ramMax" : "STRING",
+      "lstBox":[
+        {
+          "Address" :
+          {
+            "type" : "STRING",
+            "required" : true
+          },
+          "Name" :
+          {
+            "type" : "STRING",
+            "required" : true
+          },
+          "lstSensor":
+          [
+            {
+              "Address": "NUMBER",
+              "Description": "STRING",
+              "Enable": "BOOLEAN",
+              "Name": "STRING",
+              "SensorType": {
+                "type" : "STRING",
+                "required" : true,
+                "values" : [
+                  "DIGITAL",
+                  "ANALOG"
+                ]
+              }
+            }]
+        }],
+      "Box" : {
+        "type" : "STRING",
+        "required" : true,
+        "values" : {
+          "property" : "lstBox",
+          "attribute" : "name.toto.titi"
+        }
+      }
+    }
+
+  }
+]
+
+
