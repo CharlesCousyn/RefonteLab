@@ -1,26 +1,35 @@
 $(document).ready(()=>
 {
     let url = './js/ajax/example.json';
-    processConfigurationJSON(url);
+    processConfigurationJSON(url)
+        .then((json)=>
+        {
+            let Editor = new ConfigEditor(json,"mainContainer");
+        });
 });
 
-let processConfigurationJSON = function (url) {
-    $.ajax(
-        {
-            url : url,
-            type : 'GET',
-            dataType : 'json',
-            success :
-                (result, status)=>
-                {
-                    console.info(status);
-                    handleConfigJSON(result);
-                },
-
-            error : function(resultat, statut, erreur)
+let processConfigurationJSON = function (url)
+{
+    return new Promise((resolve, reject) =>
+    {
+        $.ajax(
             {
-                console.error(statut);
-                console.error(erreur);
-            }
-        });
+                url : url,
+                type : 'GET',
+                dataType : 'json',
+                success :
+                    (json, status)=>
+                    {
+                        console.info(status);
+                        resolve(json);
+                    },
+
+                error : function(resultat, statut, erreur)
+                {
+                    console.error(statut);
+                    console.error(erreur);
+                    reject(erreur);
+                }
+            });
+    });
 };

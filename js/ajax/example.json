@@ -127,7 +127,11 @@
       }]
     },
     "entities":{
-      "ramMax" : "STRING",
+      "ramMax" :
+      {
+        "type" : "STRING",
+        "required" : true
+      },
       "lstBox":[
         {
           "Address" :
@@ -141,23 +145,35 @@
             "required" : true
           },
           "lstSensor":
-          [
-            {
-              "Address": "NUMBER",
-              "Description": "STRING",
-              "Enable": "BOOLEAN",
-              "Name": "STRING",
-              "SensorType": {
-                "type" : "STRING",
-                "required" : true,
-                "values" : [
-                  "DIGITAL",
-                  "ANALOG"
-                ]
-              }
-            }]
+          [{
+            "Address": {
+              "type" : "NUMBER",
+              "required" : true
+            },
+            "Description": {
+              "type" : "STRING",
+              "required" : true
+            },
+            "Enable": {
+              "type" : "BOOLEAN",
+              "required" : true
+            },
+            "Name": {
+              "type" : "STRING",
+              "required" : true
+            },
+            "SensorType": {
+              "type" : "STRING",
+              "required" : true,
+              "values" : [
+                "DIGITAL",
+                "ANALOG"
+              ]
+            }
+          }]
         }],
-      "Box" : {
+      "Box" :
+      {
         "type" : "STRING",
         "required" : true,
         "values" : {
