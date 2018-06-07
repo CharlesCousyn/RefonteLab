@@ -9,4 +9,4 @@ Page to edit provider configuration: **providers.html**
 
 URL for ajax: **js/ajax/config.js** line 5
 
-Result of form : **js/dom/domConfig.js** line 357 (this.json)
+Result of form : **js/dom/domConfig.js** line 380 (this.json)
