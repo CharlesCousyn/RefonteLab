@@ -8,6 +8,8 @@
         "lstBox":
         [
           {
+            "lstStrings":["azert", "sdfghk"],
+            "lstNumbers":[42, 12, 7],
             "Address": "172.24.25.14",
             "Name": "Adam",
             "lstSensor":
@@ -29,6 +31,8 @@
             ]
           },
           {
+            "lstStrings":["azert", "sdfghk"],
+            "lstNumbers":[42, 12, 7],
             "Address": "172.24.25.14",
             "Name": "Energetic",
             "lstSensor":
@@ -54,6 +58,16 @@
         "lstBox":
         [
           {
+            "lstStrings":[
+              {
+                "type" : "STRING",
+                "required" : true
+              }
+            ],
+            "lstNumbers":[{
+              "type" : "NUMBER",
+              "required" : true
+            }],
             "Address" :
             {
                 "type" : "STRING",
@@ -102,86 +116,101 @@
   {
     "Name": "RFID",
     "Description": "A beautiful deskb for RFID",
-    "Path" : "PATH/TO/EXEC",
-    "config":{
-      "ramMax" : "10000M",
-      "lstBox":[{
-        "Address": "172.24.25.14",
-        "Name": "Adam",
-        "lstSensor":[{
-          "Address": 81,
-          "Description": "Relay 1",
-          "Enable": false,
-          "Name": "RelayTEst",
-          "SensorType": "Relay"
-        },
-          {
-            "Address": 42,
-            "Description": "Relay56461",
-            "Enable": false,
-            "Name": "RelayTssssst",
-            "SensorType": "Relsssay"
-          }]
-      },{
-        "Address": "172.24.25.14",
-        "Name": "Energetic",
-        "lstSensor":[{
-          "Address": 6,
-          "Description": "Relay 67",
-          "Enable": true,
-          "Name": "RelayTEst",
-          "SensorType": "Relay"
-        }]
-      }]
-    },
-    "entities":
-    {
-      "ramMax" :
-      {
-        "type" : "STRING",
-        "required" : true
-      },
-      "lstBox":
-      [
+    "Path": "PATH/TO/EXEC",
+    "config": {
+      "ramMax": "10000M",
+      "lstBox": [
         {
-          "Address" :
-          {
-            "type" : "STRING",
-            "required" : true
-          },
-          "Name" :
-          {
-            "type" : "STRING",
-            "required" : true
-          },
-          "lstSensor":
-          [
+          "lstStrings": ["sdfghj", "youuu"],
+          "lstNumbers": [42, 58, 87],
+          "Address": "172.24.25.14",
+          "Name": "Adam",
+          "lstSensor": [
             {
-              "Address":
-              {
+              "Address": 81,
+              "Description": "Relay 1",
+              "Enable": false,
+              "Name": "RelayTEst",
+              "SensorType": "Relay"
+            },
+            {
+              "Address": 42,
+              "Description": "Relay56461",
+              "Enable": false,
+              "Name": "RelayTssssst",
+              "SensorType": "Relsssay"
+            }
+          ]
+        },
+        {
+          "lstStrings": ["sdfghj", "youuu"],
+          "lstNumbers": [42, 58, 87],
+          "Address": "172.24.25.14",
+          "Name": "Energetic",
+          "lstSensor": [
+            {
+              "Address": 6,
+              "Description": "Relay 67",
+              "Enable": true,
+              "Name": "RelayTEst",
+              "SensorType": "Relay"
+            }
+          ]
+        }
+      ]
+    },
+    "entities": {
+      "ramMax": {
+        "type": "STRING",
+        "required": true
+      },
+      "lstBox": [
+        {
+          "lstStrings": [
+            {
+              "type": "STRING",
+              "required": true
+            }
+          ],
+          "lstNumbers": [
+            {
+              "type": "NUMBER",
+              "required": true
+            }
+          ],
+          "Address": {
+            "type": "STRING",
+            "required": true
+          },
+          "Name": {
+            "type": "STRING",
+            "required": true
+          },
+          "lstSensor": [
+            {
+              "Address": {
                 "type": "NUMBER",
                 "required": true
               },
-              "Description":
-              {
+              "Description": {
                 "type": "STRING",
                 "required": true
               },
-              "Enable":
-              {
+              "Enable": {
                 "type": "BOOLEAN",
                 "required": true
               },
-              "Name":
-              {
+              "Name": {
                 "type": "STRING",
                 "required": true
               },
-              "SensorType":
-              {
+              "SensorType": {
                 "type": "STRING",
                 "required": true,
-                "values": ["DIGITAL","ANALOG"]
+                "values": [
+                  "DIGITAL",
+                  "ANALOG"
+                ]
               }
             }
           ]

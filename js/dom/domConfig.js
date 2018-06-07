@@ -194,6 +194,15 @@ class ConfigEditor
             //It's a simple attribute
             else
             {
+                let deleteButtonSimpleElement = "";
+                if(!isNaN(key))
+                {
+                    format = objFormat[0];
+                    deleteButtonSimpleElement += "<div class='w3-button w3-border w3-right' onclick='deleteElement($(this))'>";
+                    deleteButtonSimpleElement += "<i class='fa fa-close' style='display:inline'></i>";
+                    deleteButtonSimpleElement += "</div>"
+                }
+
                 //Is the field required?
                 let required = false;
                 if(format.required !== undefined && format.required)
@@ -203,6 +212,12 @@ class ConfigEditor
 
                 //Generate id of simple attribute
                 let idSimpleAttribute = name + "_" + key;
+
+                //For adding button
+                if(displayIndex !== -1)
+                {
+                    key = displayIndex;
+                }
 
                 if(type === "boolean")
                 {
@@ -214,6 +229,7 @@ class ConfigEditor
                     treeString += "<input type='hidden' name='type' value='"+format.type+"'/>";
                     treeString += "<input class='w3-check fromFormProvider' onchange='"+onchange+"' id='" + idSimpleAttribute + "' type='checkbox' "+(value ? "checked":"")+"/>";
                     treeString += "<input type='hidden' name='"+key+"' value='"+value+"'/>";
+                    treeString += deleteButtonSimpleElement;
                     treeString += "</li>";
 
                 }
@@ -242,6 +258,7 @@ class ConfigEditor
                     }
 
                     treeString += "/>";
+                    treeString += deleteButtonSimpleElement;
                     treeString += "</li>";
                 }
                 else if(type === "string")
@@ -268,6 +285,7 @@ class ConfigEditor
                     }
 
                     treeString += "/>";
+                    treeString += deleteButtonSimpleElement;
                     treeString += "</li>";
                 }
             }
@@ -411,7 +429,18 @@ class ConfigEditor
                 {
                     if(!isNaN(name))
                     {
-                        jsonString += value+"\",";
+                        if(STRING)
+                        {
+                            jsonString += "\""+value+"\",";
+                        }
+                        else if(NUMBER || BOOLEAN)
+                        {
+                            jsonString += value+",";
+                        }
+                        else
+                        {
+                            jsonString += value+"\",";
+                        }
                     }
                     else
                     {
@@ -458,9 +487,15 @@ let addElementToUl = function(button, formatIndex)
             $.each(elem.children(), (index2, elem2)=>
             {
                 elem2 = $(elem2);
+                //For list of objects
                 if(elem2.is("ul"))
                 {
                     allIndexes.push(parseInt(elem2.find(":first-child").val()));
+                }
+                //For list of simple attributes
+                else if(elem2.is("label"))
+                {
+                    allIndexes.push(parseInt(elem2.text()));
                 }
             });
         }
@@ -475,6 +510,7 @@ let addElementToUl = function(button, formatIndex)
     {
         newIndex = 1 + Math.max.apply(null, allIndexes);
     }
+
 
     let emptyObj = generateEmptyObjFromFormat(format, newIndex);
 
@@ -499,6 +535,10 @@ let deleteElement = function(button)
 let generateEmptyObjFromFormat = function(format, index)
 {
     let emptyObj = {};
+    if(Array.isArray(format))
+    {
+        emptyObj = [];
+    }
     Object.keys(format).forEach((key)=>
     {
         let value = format[key];
