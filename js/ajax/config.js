@@ -1,10 +1,12 @@
+var Editor;
+
 $(document).ready(()=>
 {
     let url = './js/ajax/example.json';
     processConfigurationJSON(url)
         .then((json)=>
         {
-            let Editor = new ConfigEditor(json,"mainContainer");
+            Editor = new ConfigEditor(json,"mainContainer");
         });
 });
 

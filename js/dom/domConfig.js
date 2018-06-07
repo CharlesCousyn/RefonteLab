@@ -1,3 +1,6 @@
+let listsOfFormats;
+let formatIndex;
+
 class ConfigEditor
 {
     constructor(json, id)
@@ -8,6 +11,8 @@ class ConfigEditor
 
         this.generateSelectProvider((providerName)=>
         {
+            listsOfFormats= [];
+            formatIndex = 0;
             this.createForm(providerName)
         });
     }
@@ -99,21 +104,24 @@ class ConfigEditor
     generateAllSubObjects(id, config, formatConfig)
     {
         let str = "";
-        str += this.generateConfigTreeString("Configuration", config, formatConfig);
+        str += this.generateConfigTreeString("Configuration", config, formatConfig, true, -1);//true and -1 = comportement normal
         $("#"+id).append(str);
     }
 
-    generateConfigTreeString(name, obj, objFormat)
+    generateConfigTreeString(name, obj, objFormat, boolCreateHidden, displayIndex)
     {
         let treeString = "";
 
-        if(Array.isArray(obj))
+        if(boolCreateHidden)
         {
-            treeString += '<input type="hidden" name="array-in" value="'+name+'"/>';
-        }
-        else
-        {
-            treeString += '<input type="hidden" name="separation-in" value="'+name+'"/>';
+            if(Array.isArray(obj))
+            {
+                treeString += '<input type="hidden" name="array-in" value="'+name+'"/>';
+            }
+            else
+            {
+                treeString += '<input type="hidden" name="separation-in" value="'+name+'"/>';
+            }
         }
 
 
@@ -135,18 +143,34 @@ class ConfigEditor
                     format = objFormat[0];
                 }
 
+                let onClickCode = "toggleNextElement(this)";
+
                 treeString += "<li class='w3-border'>";
-                    treeString += "<div class='w3-button w3-border'>";
-                    treeString += key;
+                    treeString += "<div class='w3-button w3-border'  onclick='"+onClickCode+"'>";
+                    if(displayIndex !== -1)
+                    {
+                        treeString += displayIndex;
+                    }
+                    else
+                    {
+                        treeString += key;
+                    }
                     treeString +="<i class='fa fa-caret-down w3-hide w3-show' style='display:inline'></i>";
                     treeString +="<i class='fa fa-caret-up  w3-hide' style='display:inline'></i>";
                     treeString +="</div>";
-                    treeString += "<ul class='w3-ul w3-border'>";
+                    treeString += "<ul class='w3-ul w3-border hide' style='display: none;'>";
                     //treeString += "<button class='w3-button w3-border' id='"+idDeleteButton+"' onclick='deleteElement(\""+idDeleteButton+"\")'><i class='fa fa-close' style='display:inline'></i></button>";
-                    treeString += this.generateConfigTreeString(key, value, format);
+                    if(displayIndex !== -1)
+                    {
+                        treeString += this.generateConfigTreeString(displayIndex, value, format, true, -1);
+                    }
+                    else
+                    {
+                        treeString += this.generateConfigTreeString(key, value, format, true, -1);
+                    }
                     if(Array.isArray(value))
                     {
-                        treeString += this.generateAddingButton(format);
+                        treeString += this.generateAddingButton(formatIndex);
                     }
                     treeString += "</ul>";
                 treeString += "</li>";
@@ -232,161 +256,73 @@ class ConfigEditor
                 }
             }
 
-
+            //We add a new format to the list if different from the las (prevent elements of array...)
+            if(listsOfFormats === 0 ||(listsOfFormats !==0 && listsOfFormats[listsOfFormats.length-1] !== format))
+            {
+                listsOfFormats.push(format);
+                formatIndex++;
+            }
         });
 
-        if(Array.isArray(obj))
+        if(boolCreateHidden)
         {
-            treeString += '<input type="hidden" name="array-out" value="'+name+'"/>';
-        }
-        else
-        {
-            treeString += '<input type="hidden" name="separation-out" value="'+name+'"/>';
-        }
-
-        return treeString;
-
-
-        /*
-        Object.keys(obj).forEach((key)=>
-        {
-            let value = obj[key];
-            let format = formatConfig[key];
-
-            console.log("Key: "+key);
-            console.log(value);
-
-            if(typeof value === "object")
+            if(Array.isArray(obj))
             {
-                let idNewParent = name+"_"+key;
-
-                let field;
-
-                //Is it an array?
-                let idAddingButton = "";
-                let idDeleteButton = "";
-                if(!Array.isArray(value))
-                {
-                    idAddingButton = name+ "_addingButton";
-                    idDeleteButton = idNewParent+ "_deleteButton";
-
-                    treeString+="<li>";
-                    treeString+="<button class='w3-button w3-border' onclick='toggleShowHide(\""+idNewParent+"\")'>";
-                    treeString+=key;
-                    treeString+="<i class='fa fa-caret-down w3-hide w3-show' style='display:inline'></i>";
-                    treeString+="<i class='fa fa-caret-up  w3-hide' style='display:inline'></i>";
-                    treeString+="</button>";
-                    treeString += "<button class='w3-button w3-border' id='"+idDeleteButton+"' onclick='deleteElement(\""+idDeleteButton+"\")'><i class='fa fa-close' style='display:inline'></i></button>";
-                    treeString+="</li>";
-
-                    field = $(str);
-
-
-                    //Format is slightly different
-                    format = formatConfig[0];
-
-                    //$("#"+name).append(field);
-                    console.log("insertbefore(#"+idAddingButton+")");
-                    field.insertBefore($("#"+idAddingButton).parent());
-                }
-                else
-                {
-                    idAddingButton = idNewParent+ "_addingButton";
-                    field = $("<li></li>")
-                        .append("<h3>"+key+"</h3>")
-                        .append("<ul class='w3-ul' id='"+idNewParent+"'>" +
-                            "<li><button class='w3-button w3-border' id='"+idAddingButton+"'>\+" +
-                            "</button></li></ul>");
-
-
-                    $("#"+name).append(field);
-
-                    //Event for adding buttons
-                    $("#"+idAddingButton).click((evt)=>
-                    {
-                        evt.preventDefault();
-                        console.log(idAddingButton);
-
-                        addElementToArray(idAddingButton, format, $("#"+idAddingButton).parent().parent().attr('id'));
-                    });
-                }
-
-                this.generateSubObject(idNewParent, value, format);
+                treeString += '<input type="hidden" name="array-out" value="'+name+'"/>';
             }
             else
             {
-                //Is the field required?
-                let required = false;
-                if(format.required !== undefined && format.required)
-                {
-                    required = true;
-                }
-
-                //Generate id of simple attribute
-                let idSimpleAttribute = name + "_" + key;
-
-                let field;
-                if(typeof value === "boolean")
-                {
-                    //Generate the field
-                    let str = "";
-                    str+="<li class='w3-row w3-padding-large'>";
-                    str+="<label class='w3'>" + key + "</label>";
-                    str+="<input class='w3-check fromFormProvider' id='" + idSimpleAttribute + "' type='checkbox' "+(value ? "checked":"")+"/>";
-                    str+="</li>";
-
-                    field = $(str);
-                }
-                else if(typeof value === "number")
-                {
-                    //Generate the field
-                    let str = "";
-                    str+="<li class='w3-row w3-padding-large'>";
-                    str+="<label class='w3-col m4 l3'>" + key + "</label>";
-                    str+="<input class='w3-input w3-border w3-col m4 l3 fromFormProvider' id='" + idSimpleAttribute + "' type='number' value='"+value+"'"+ (required ? "required":"")+"/>";
-                    str+="</li>";
-
-                    field = $(str);
-                }
-                else
-                {
-                    //Generate the field
-                    let str = "";
-                    str+="<li class='w3-row w3-padding-large'>";
-                    str+="<label class='w3-col m4 l3'>" + key + "</label>";
-                    str+="<input class='w3-input w3-border w3-col m4 l3 fromFormProvider' id='" + idSimpleAttribute + "' type='text' value='"+value+"'"+ (required ? "required":"")+"/>";
-                    str+="</li>";
-
-                    field = $(str);
-                }
-
-                $("#"+name).append(field);
+                treeString += '<input type="hidden" name="separation-out" value="'+name+'"/>';
             }
+        }
 
-
-            //if(Array.isArray(value))
-            //{
-                //let idNewParent = name+"_"+key;
-                //let idAddingButton = name+ "_addingButton";
-                //let idDeleteButton = idNewParent+ "_deleteButton";
-            //}
-        });*/
+        return treeString;
     }
 
-    generateAddingButton()
+    generateAddingButton(formatIndex)
     {
         let str= "";
         str += "<li class='w3-border'>";
-            str += "<div class='w3-button w3-border'>+</div>";
+            str += "<div class='w3-button w3-border' onclick='addElementToUl($(this), "+formatIndex+")'>+</div>";
         str += "</li>";
         return str;
     }
 
     handleSubmission(providerConfig)
     {
+        //Handle errors
+        let submitButton = $("#idValidateButton");
+        submitButton.click(()=>
+        {
+            let myForm = submitButton.parent();
+            let inputElements = myForm.find("input");
+            let badElements = [];
+            $.each(inputElements, (index, elem)=>
+            {
+                if(!elem.checkValidity())
+                {
+                    badElements.push(elem);
+                }
+            });
+
+            if(badElements.length !== 0)
+            {
+                badElements.forEach((elem)=>
+                {
+                    let ancestors = $(elem).parents(".hide");
+                    $.each(ancestors, (index, element)=>
+                        {
+                            showElement($(element));
+                        }
+                    );
+                });
+            }
+        });
+
         //Handle classic submission
         $("#formProvider").submit( (evt) =>
         {
+            console.log("coucou");
             evt.preventDefault();
             let myForm = $(evt.target);
             let formArray = myForm.serializeArray();
@@ -474,45 +410,111 @@ class ConfigEditor
 
         return newConfig;
     }
+}
 
-    validateAndUpdateConfigObject(globalConfig, globalFormat)
+
+
+let addElementToUl = function(button, formatIndex)
+{
+    let format = listsOfFormats[formatIndex];
+
+    //Compute good index
+    let allIndexes = [];
+    $.each(button.parent().parent().children(), (index, elem)=>
     {
-        Object.keys(globalConfig).forEach((key)=>
+        elem = $(elem);
+        if(elem.is("li"))
         {
-            let format = globalFormat[key];
-            /*
-            console.log("Key: "+key);
-            console.log(globalConfig[key]);
-            console.log(format);*/
-
-            if(typeof format === "object")
+            $.each(elem.children(), (index2, elem2)=>
             {
-                //We can control the type!!
-                if(format.type === undefined || format.required === undefined)
+                elem2 = $(elem2);
+                if(elem2.is("ul"))
                 {
-                    if(!isNaN(key))
-                    {
-                        format = globalFormat[0];
-                    }
+                    allIndexes.push(parseInt(elem2.find(":first-child").val()));
+                }
+            });
+        }
+    });
 
-                    this.validateAndUpdateConfigObject(globalConfig[key], format);
+    console.log(allIndexes);
+    let newIndex;
+    if(allIndexes.length === 0)
+    {
+        newIndex = 0;
+    }
+    else
+    {
+        newIndex = 1 + Math.max.apply(null, allIndexes);
+    }
+
+    let obj = generateEmptyObjFromFormat(format, newIndex);
+
+    console.log(obj);
+
+    let str= "";
+    str += Editor.generateConfigTreeString(newIndex, obj, format, false, newIndex);
+
+    $(str).insertBefore(button.parent().prev());
+};
+
+
+
+let generateEmptyObjFromFormat = function(format, index)
+{
+    let emptyObj = {};
+    Object.keys(format).forEach((key)=>
+    {
+        let value = format[key];
+
+        if(typeof value === "object")
+        {
+            //It's a simple attribute
+            if(value.type !== undefined && value.required !== undefined)
+            {
+                if(value.type === "BOOLEAN")
+                {
+                    emptyObj[key] = false;
                 }
                 else
                 {
-                    //Conversion in good type
-                    if(format.type === "BOOLEAN")
-                    {
-                        globalConfig[key] = (globalConfig[key] === "true");
-                    }
-                    else if(format.type === "NUMBER")
-                    {
-                        globalConfig[key] = parseInt(globalConfig[key]);
-                    }
+                    emptyObj[key] = "";
                 }
             }
-        });
+            else
+            {
+                emptyObj[key] = generateEmptyObjFromFormat(value, index);
+            }
+        }
+    });
+    return emptyObj;
+};
+
+let toggleNextElement = function(element)
+{
+    let nextElement = $(element).next();
+    if(nextElement.hasClass("show"))
+    {
+        nextElement.slideUp();
+        nextElement.removeClass("show");
+        nextElement.addClass("hide");
     }
-}
+    else if(nextElement.hasClass("hide"))
+    {
+        nextElement.slideDown();
+        nextElement.removeClass("hide");
+        nextElement.addClass("show");
+    }
+};
+
+let showElement= function(element)
+{
+    if(!element.hasClass("show"))
+    {
+        element.slideDown();
+        element.removeClass("hide");
+        element.addClass("show");
+    }
+};
 
 
 
