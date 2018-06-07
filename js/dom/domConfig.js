@@ -131,10 +131,6 @@ class ConfigEditor
             let type = typeof(value);
             let format = objFormat[key];
 
-            /*console.log("Key: "+key);
-            console.log(value);
-            console.log(format);*/
-
             if(type === "object")
             {
                 //If it's an element of array, format is slightly different
@@ -235,7 +231,6 @@ class ConfigEditor
                 }
                 else if(type === "number")
                 {
-
                     //Generate the field
                     treeString += "<li class='w3-row w3-padding-large'>";
                     treeString += "<label class='w3-col s5 m4 l3'>" + key + "</label>";
@@ -572,6 +567,22 @@ let generateEmptyObjFromFormat = function(format, index)
                 {
                     emptyObj[key] = generateEmptyObjFromFormat(value, index);
                 }
+            }
+        }
+        else
+        {
+            //format is already the good format
+            if(format.type === "BOOLEAN")
+            {
+                emptyObj = false;
+            }
+            else if(format.type === "NUMBER")
+            {
+                emptyObj = 0;
+            }
+            else
+            {
+                emptyObj = "";
             }
         }
     });
