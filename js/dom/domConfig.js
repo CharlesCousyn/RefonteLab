@@ -362,17 +362,13 @@ class ConfigEditor
 
             let newJson = this.parseFormArray(formArray, providerConfig);
 
-            //Fusion providerConfigJSON with array of providerConfigs
-            let indexProviderConfig = this.json.findIndex((elem)=> newJson.Name === elem.Name);
-            this.json[indexProviderConfig] = newJson;
-
             $("#alertSuccess").attr("style", "display:;");
             $("#alertError").attr("style", "display:none;");
             //Animation when succeed!
             let speed = 750; // Durée de l'animation (en ms)
             $('html, body').animate( { scrollTop: 0 }, speed );
 
-            console.log(this.json);
+            console.log(newJson);
             return false;
         });
     }
