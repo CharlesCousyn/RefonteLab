@@ -130,8 +130,8 @@ class ConfigEditor
             let value = obj[key];
             let type = typeof(value);
             let format = objFormat[key];
-/*
-            console.log("Key: "+key);
+
+            /*console.log("Key: "+key);
             console.log(value);
             console.log(format);*/
 
@@ -139,6 +139,7 @@ class ConfigEditor
             {
                 //If it's an element of array, format is slightly different
                 let brotherDistance = 1;
+
                 if(!isNaN(key))
                 {
                     format = objFormat[0];
@@ -174,6 +175,7 @@ class ConfigEditor
 
                     treeString += "<ul class='w3-ul w3-border w3-leftbar hide' style='display: none;'>";
                     //treeString += "<button class='w3-button w3-border' id='"+idDeleteButton+"' onclick='deleteElement(\""+idDeleteButton+"\")'><i class='fa fa-close' style='display:inline'></i></button>";
+
                     if(displayIndex !== -1)
                     {
                         treeString += this.generateConfigTreeString(displayIndex, value, format, true, -1);
@@ -429,6 +431,8 @@ class ConfigEditor
         jsonString = jsonString.replace(/,}/g,"}");
         jsonString = jsonString.replace(/,]/g,"]");
 
+        console.log(jsonString);
+
         newConfig.config = JSON.parse(jsonString).Configuration;
 
         return newConfig;
@@ -472,6 +476,7 @@ let addElementToUl = function(button, formatIndex)
     let emptyObj = generateEmptyObjFromFormat(format, newIndex);
 
     let str= "";
+
     str += Editor.generateConfigTreeString(newIndex, emptyObj, format, false, newIndex);
 
     $(str).insertBefore(button.parent().prev());
@@ -504,6 +509,10 @@ let generateEmptyObjFromFormat = function(format, index)
                 {
                     emptyObj[key] = false;
                 }
+                else if(value.type === "NUMBER")
+                {
+                    emptyObj[key] = 0;
+                }
                 else
                 {
                     emptyObj[key] = "";
@@ -511,7 +520,15 @@ let generateEmptyObjFromFormat = function(format, index)
             }
             else
             {
-                emptyObj[key] = generateEmptyObjFromFormat(value, index);
+                if(Array.isArray(value))
+                {
+                    emptyObj[key] = [];
+                    emptyObj[key].push(generateEmptyObjFromFormat(value[0], index));
+                }
+                else
+                {
+                    emptyObj[key] = generateEmptyObjFromFormat(value, index);
+                }
             }
         }
     });
