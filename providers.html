@@ -23,8 +23,8 @@
 <!-- Navbar -->
 <div class="w3-top">
     <div class="w3-bar w3-red w3-card w3-left-align w3-large">
-        <a href="./index.html" class="w3-bar-item w3-button w3-padding-large w3-white">Accueil</a>
-        <a href="./providers.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Providers</a>
+        <a href="./index.html" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white">Accueil</a>
+        <a href="./providers.html" class="w3-bar-item w3-button w3-padding-large w3-white">Providers</a>
     </div>
 </div>
 
@@ -34,21 +34,21 @@
 </header>
 
 <!-- Main contener -->
-<div class="w3-container" id="mainContainer">
-    <section id="providerContainer">
-        <h1 class="w3-margin w3-jumbo" id="nameProvider">ProviderName</h1>
-        <p class="w3-margin" id="descriptionProvider">Superatis Tauri montis verticibus qui ad solis ortum sublimius attolluntur, Cilicia spatiis porrigitur late distentis dives bonis omnibus terra, eiusque lateri dextro adnexa Isauria, pari sorte uberi palmite viget et frugibus minutis, quam mediam navigabile flumen Calycadnus interscindit.</p>
-        <div class="w3-panel w3-pale-blue w3-leftbar w3-rightbar w3-border-blue">
-            <p>Path to execute</p>
-            <p id="pathProvider">C:\Users\CharlesCOUSYN\Downloads\MetaResults</p>
-        </div>
-        <h2 class="w3-margin w3-jumbo">Configuration</h2>
-        <ul class="w3-ul" id="listFields">
-            <li class="w3-hover-grey w3-padding">Jilllllll</li>
-            <li class="w3-hover-grey w3-padding">Eve</li>
-            <li class="w3-hover-grey w3-padding">Adam</li>
-        </ul>
-    </section>
+<div class="w3-container" id="mainContainer" style="width:75%;margin:auto;padding-top:20px;">
+    <div id="alertSuccess" class="w3-panel w3-green w3-display-container" style="display:none;">
+          <span onclick="this.parentElement.style.display='none'"
+                class="w3-button w3-green w3-large w3-display-topright">&times;
+          </span>
+        <h3>Mise à jour de la configuration réussie!</h3>
+        <p>Le formulaire ne contient pas d'erreurs</p>
+    </div>
+    <div id="alertError" class="w3-panel w3-red w3-display-container" style="display:none;">
+      <span onclick="this.parentElement.style.display='none'"
+            class="w3-button w3-red w3-large w3-display-topright">&times;</span>
+        <h3>Erreur!</h3>
+        <p>Le formulaire contient des erreurs</p>
+    </div>
+    <section id="providerContainer"></section>
 </div>
 
 

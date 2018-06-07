@@ -20,7 +20,7 @@ class ConfigEditor
     generateSelectProvider(callback)
     {
         let str = "";
-        str += "<select class='w3-select w3-border' name='chooseProvider' id='chooseProvider'>";
+        str += "<select class='w3-select w3-border w3-light-grey' name='chooseProvider' id='chooseProvider' style='margin-bottom:20px;'>";
             str += "<option value='' disabled selected>Choisissez votre provider</option>";
             this.json.forEach(
                 (providerConfig)=>
@@ -31,7 +31,7 @@ class ConfigEditor
         str += "</select>";
 
         //Place the selector and the options
-        $("#"+this.id).html("").append(str);
+        $("#"+this.id).append(str);
 
 
 
@@ -70,7 +70,7 @@ class ConfigEditor
     {
         //We put the form
         let str="";
-        str+="<form id='formProvider' data-providerName='"+providerName+"' method='POST' action='#'>";
+        str+="<form id='formProvider' data-providerName='"+providerName+"' method='POST' action='#' style='padding:3%;'>";
         str+="<h1 class='w3-margin w3-jumbo' id='nameProvider'></h1>";
         str+="<p class='w3-margin' id='descriptionProvider'></p>";
         str+="<div class='w3-panel w3-pale-blue w3-leftbar w3-rightbar w3-border-blue'>";
@@ -80,7 +80,7 @@ class ConfigEditor
         str+="<h2 class='w3-margin w3-jumbo'>Configuration</h2>";
         str+="<ul class='w3-ul' id='listFields' class='w3-border'>";
         str+="</ul>";
-        str+="<input type='submit' class='w3-btn w3-padding w3-teal' id='idValidateButton' value='Modifier'/>";
+        str+="<input type='submit' class='w3-btn w3-padding w3-teal' id='idValidateButton' value='Modifier' style='margin:auto;width:100px;'/>";
         str+="</form>";
 
 
@@ -138,14 +138,18 @@ class ConfigEditor
             if(type === "object")
             {
                 //If it's an element of array, format is slightly different
+                let brotherDistance = 1;
                 if(!isNaN(key))
                 {
                     format = objFormat[0];
+                    brotherDistance++;
                 }
 
-                let onClickCode = "toggleNextElement(this)";
+                let onClickCode = "toggleNextElement($(this), "+brotherDistance+")";
 
-                treeString += "<li class='w3-border'>";
+                treeString += "<li class=''>";
+
+                    //Element Button
                     treeString += "<div class='w3-button w3-border'  onclick='"+onClickCode+"'>";
                     if(displayIndex !== -1)
                     {
@@ -158,7 +162,17 @@ class ConfigEditor
                     treeString +="<i class='fa fa-caret-down w3-hide w3-show' style='display:inline'></i>";
                     treeString +="<i class='fa fa-caret-up  w3-hide' style='display:inline'></i>";
                     treeString +="</div>";
-                    treeString += "<ul class='w3-ul w3-border hide' style='display: none;'>";
+
+                    //Delete button if it's an element of array
+                    if(!isNaN(key))
+                    {
+                        let onDeleteCode ="deleteElement($(this))";
+                        treeString += "<div class='w3-button w3-border w3-right'  onclick='"+onDeleteCode+"'>";
+                        treeString +="<i class='fa fa-close' style='display:inline'></i>";
+                        treeString +="</div>"
+                    }
+
+                    treeString += "<ul class='w3-ul w3-border w3-leftbar hide' style='display: none;'>";
                     //treeString += "<button class='w3-button w3-border' id='"+idDeleteButton+"' onclick='deleteElement(\""+idDeleteButton+"\")'><i class='fa fa-close' style='display:inline'></i></button>";
                     if(displayIndex !== -1)
                     {
@@ -194,7 +208,7 @@ class ConfigEditor
 
                     //Generate the field
                     treeString += "<li class='w3-row w3-padding-large'>";
-                    treeString += "<label class='w3'>" + key + "</label>";
+                    treeString += "<label class='w3-col s5 m4 l3'>" + key + "</label>";
                     treeString += "<input type='hidden' name='type' value='"+format.type+"'/>";
                     treeString += "<input class='w3-check fromFormProvider' onchange='"+onchange+"' id='" + idSimpleAttribute + "' type='checkbox' "+(value ? "checked":"")+"/>";
                     treeString += "<input type='hidden' name='"+key+"' value='"+value+"'/>";
@@ -206,9 +220,9 @@ class ConfigEditor
 
                     //Generate the field
                     treeString += "<li class='w3-row w3-padding-large'>";
-                    treeString += "<label class='w3-col m4 l3'>" + key + "</label>";
+                    treeString += "<label class='w3-col s5 m4 l3'>" + key + "</label>";
                     treeString += "<input type='hidden' name='type' value='"+format.type+"'/>";
-                    treeString += "<input class='w3-input w3-border w3-col m4 l3 fromFormProvider' name='"+key+"' id='" + idSimpleAttribute + "' type='number' value='"+value+"'"+ (required ? "required":"");
+                    treeString += "<input class='w3-input w3-border w3-col m4 l4 fromFormProvider' name='"+key+"' id='" + idSimpleAttribute + "' type='number' value='"+value+"'"+ (required ? "required":"");
 
                     //Create the regular expression for the field
                     let valuesRegExp = "";
@@ -232,9 +246,9 @@ class ConfigEditor
                 {
                     //Generate the field
                     treeString += "<li class='w3-row w3-padding-large'>";
-                    treeString += "<label class='w3-col m4 l3'>" + key + "</label>";
+                    treeString += "<label class='w3-col s5 m4 l3'>" + key + "</label>";
                     treeString += "<input type='hidden' name='type' value='"+format.type+"'/>";
-                    treeString += "<input class='w3-input w3-border w3-col m4 l3 fromFormProvider' name='"+key+"' id='" + idSimpleAttribute + "' type='text' value='"+value+"'"+ (required ? "required":"");
+                    treeString += "<input class='w3-input w3-border w3-col m4 l4 fromFormProvider' name='"+key+"' id='" + idSimpleAttribute + "' type='text' value='"+value+"'"+ (required ? "required":"");
 
                     //Create the regular expression for the field
                     let valuesRegExp = "";
@@ -282,7 +296,7 @@ class ConfigEditor
     generateAddingButton(formatIndex)
     {
         let str= "";
-        str += "<li class='w3-border'>";
+        str += "<li>";
             str += "<div class='w3-button w3-border' onclick='addElementToUl($(this), "+formatIndex+")'>+</div>";
         str += "</li>";
         return str;
@@ -316,13 +330,16 @@ class ConfigEditor
                         }
                     );
                 });
+
+                $("#alertSuccess").attr("style", "display:none;");
+                $("#alertError").attr("style", "display:;");
+
             }
         });
 
         //Handle classic submission
         $("#formProvider").submit( (evt) =>
         {
-            console.log("coucou");
             evt.preventDefault();
             let myForm = $(evt.target);
             let formArray = myForm.serializeArray();
@@ -330,8 +347,14 @@ class ConfigEditor
 
             let newJson = this.parseFormArray(formArray, providerConfig);
 
-            console.log(newJson);
-            console.log(JSON.stringify(newJson));
+            //Fusion providerConfigJSON with array of providerConfigs
+            let indexProviderConfig = this.json.findIndex((elem)=> newJson.Name === elem.Name);
+            this.json[indexProviderConfig] = newJson;
+
+            $("#alertSuccess").attr("style", "display:;");
+            $("#alertError").attr("style", "display:none;");
+
+            console.log(this.json);
             return false;
         });
     }
@@ -436,7 +459,6 @@ let addElementToUl = function(button, formatIndex)
         }
     });
 
-    console.log(allIndexes);
     let newIndex;
     if(allIndexes.length === 0)
     {
@@ -447,14 +469,21 @@ let addElementToUl = function(button, formatIndex)
         newIndex = 1 + Math.max.apply(null, allIndexes);
     }
 
-    let obj = generateEmptyObjFromFormat(format, newIndex);
-
-    console.log(obj);
+    let emptyObj = generateEmptyObjFromFormat(format, newIndex);
 
     let str= "";
-    str += Editor.generateConfigTreeString(newIndex, obj, format, false, newIndex);
+    str += Editor.generateConfigTreeString(newIndex, emptyObj, format, false, newIndex);
 
     $(str).insertBefore(button.parent().prev());
+};
+
+let deleteElement = function(button)
+{
+    let idElement = button.prev().text();
+    if(confirm("Etes vous sûr de supprimer l'élément "+idElement+" ?"))
+    {
+        button.parent().remove();
+    }
 };
 
 
@@ -489,9 +518,16 @@ let generateEmptyObjFromFormat = function(format, index)
     return emptyObj;
 };
 
-let toggleNextElement = function(element)
+let toggleNextElement = function(element, distance)
 {
-    let nextElement = $(element).next();
+    let nextElement = element;
+    let i = 0;
+    while(i < distance)
+    {
+        nextElement = nextElement.next();
+        i++;
+    }
+
     if(nextElement.hasClass("show"))
     {
         nextElement.slideUp();
@@ -514,252 +550,4 @@ let showElement= function(element)
         element.removeClass("hide");
         element.addClass("show");
     }
-};
-
-
-
-let idToFormatPath = function(id, indexesToZero)
-{
-    //listFields_lstBox_0_lstSensor_0
-    //lstBox_0_lstSensor_0
-
-    let newString = id
-        .replace("listFields_", "")
-        .replace("listFields", "");
-
-    let split = newString.split("_");
-
-    let path = "";
-    split.forEach((elem, index)=>
-    {
-        if(elem === "")
-        {
-            path += "";
-        }
-        else if(!isNaN(elem))
-        {
-            if(indexesToZero)
-            {
-
-                path += "[0]";
-            }
-            else
-            {
-                path += "["+elem+"]";
-            }
-        }
-        else
-        {
-            path += "." + elem;
-        }
-    });
-
-    if(path.substr(0, 1) === ".")
-    {
-        path = path.substr(1, path.length-1);
-    }
-
-    return path;
-};
-
-let idToPathArray = function(id, indexesToZero)
-{
-    //listFields_lstBox_0_lstSensor_0
-    //lstBox_0_lstSensor_0
-
-    let newString = id
-        .replace("listFields_", "")
-        .replace("listFields", "");
-
-    let split = newString.split("_");
-
-    if(indexesToZero)
-    {
-        split.forEach(
-            (elem, index)=>
-            {
-                if(!isNaN(elem))
-                {
-                    split[index] = "0";
-                }
-            }
-        );
-    }
-
-    return split;
-};
-
-let  toggleShowHide =function(id){
-    let x = $("#"+id);
-    if (!x.hasClass("w3-show"))
-    {
-        x.addClass(" w3-show");
-    }
-    else
-    {
-        x.removeClass(" w3-show");
-    }
-
-    let button=x.parent().find("button");
-    let down = button.find("i.fa-caret-down");
-    let up = button.find("i.fa-caret-up");
-
-    if (!down.hasClass("w3-show"))
-    {
-        down.addClass(" w3-show");
-        up.removeClass(" w3-show");
-    }
-    else
-    {
-        down.removeClass(" w3-show");
-        up.addClass(" w3-show");
-    }
-
-
-};
-
-let addElementToArray = function(idAddingButton, formatToAdd, idContainerToFull)
-{
-    Object.keys(formatToAdd).forEach((key)=>
-    {
-        let value = formatToAdd[key];
-        /*
-        console.log("Key: "+key);
-        console.log("value");
-        console.log(value);*/
-
-        if(typeof value === "object")
-        {
-            let type = value.type;
-            let required = value.required;
-            let values = value.values;
-
-            //It's a final object!
-            if(type !== undefined && required !== undefined)
-            {
-                //Create the field
-                let field = undefined;
-
-                //Generate id of simple attribute
-                let idSimpleAttribute = $("#"+idAddingButton).parent().attr('id') + "_" + key;
-
-                if(type === "STRING")
-                {
-                    //Generate the field
-                    field = $("<li class='w3-row w3-padding-large'></li>")
-                        .append($("<label class='w3-col m4 l3'>" + key + "</label>"))
-                        .append($("<input class='w3-input w3-border w3-col m4 l3 fromFormProvider' " +
-                            "id='" + idSimpleAttribute + "' " +
-                            "type='text' value='' " +
-                            (required ? "required":"")+"/>"));
-                }
-                else if(type === "NUMBER")
-                {
-                    //Generate the field
-                    field = $("<li class='w3-row w3-padding-large'></li>")
-                        .append($("<label class='w3-col m4 l3'>" + key + "</label>"))
-                        .append($("<input class='w3-input w3-border w3-col m4 l3 fromFormProvider' " +
-                            "id='" + idSimpleAttribute + "' " +
-                            "type='number' value='' " +
-                            (required ? "required":"")+"/>"));
-                }
-                else if(type === "BOOLEAN")
-                {
-                    //Generate the field
-                    field = $("<li class='w3-row w3-padding-large'></li>")
-                        .append($("<label class='w3'>" + key + "</label>"))
-                        .append($("<input class='w3-check fromFormProvider' " +
-                            "id='" + idSimpleAttribute + "' " +
-                            "type='checkbox'"+
-                            " " +
-                            (required ? "required":"") +
-                            " " +
-                            ">"));
-                }
-
-                $("#"+idContainerToFull).append(field);
-                //field.insertBefore("#"+idAddingButton);
-            }
-            //Recursion...
-            else
-            {
-                //It's an array
-                if(Array.isArray(value))
-                {
-                    let idUl = idContainerToFull+"_"+key;
-                    let idNewAddingButton = idUl + "_addingButton";
-
-                    let field = $("<li></li>")
-                        .append("<h3>"+key+"</h3>")
-                        .append("<ul class='w3-ul' id='"+idUl+"'>" +
-                            "<li><button class='w3-button w3-border' id='"+idNewAddingButton+"'>\+" +
-                            "</button></li></ul>");
-
-                    $("#"+idContainerToFull).append(field);
-
-                    //Event for adding buttons
-                    $("#"+idNewAddingButton).click((evt)=>
-                    {
-                        evt.preventDefault();
-                        console.log(idNewAddingButton);
-                        addElementToArray(idNewAddingButton, value, $("#"+idNewAddingButton).parent().parent().attr('id'));
-                    });
-                }
-                //It's a real object
-                else
-                {
-
-                    let myAddingButton = $("#"+idAddingButton);
-                    //find the good index
-                    let index = myAddingButton.parent().parent().children().length - 1;
-
-                    let idUlAttribute = idContainerToFull + "_" + index;
-
-                    let idDeleteButton = idUlAttribute+"_deleteButton";
-
-                    let list = $("<li></li>")
-                        .append("<button class='w3-button w3-border' onclick='toggleShowHide(\""+idUlAttribute+"\")'>"+index+"" +
-                            "<i class='fa fa-caret-down w3-hide w3-show' style='display:inline'></i>" +
-                            "<i class='fa fa-caret-up  w3-hide' style='display:inline'></i>" +
-                            "</button>" +
-                            "<button class='w3-button w3-border' " +
-                            "id='"+idDeleteButton+"' " +
-                            "onclick='deleteElement(\""+idDeleteButton+"\")'>" +
-                            "<i class='fa fa-close' style='display:inline'></i></button>")
-                        .append("<ul class='w3-ul w3-border w3-hide' id='"+idUlAttribute+"'></ul>");
-
-                    list.insertBefore(myAddingButton.parent());
-                    addElementToArray(idAddingButton, formatToAdd[key], idUlAttribute);
-                }
-            }
-        }
-    });
-};
-
-let deleteElement = function(idDeleteButton)
-{
-    console.log("deleteElement("+idDeleteButton+")");
-    //Delete effectively
-    let grandFather = $("#"+idDeleteButton).parent().parent();
-    console.log("grandFather");
-    console.log(grandFather);
-    //$("#"+idDeleteButton).parent().remove();
-
-    //Get index of the child to delete
-    let indexChildToDelete = $("#"+idDeleteButton).parent().children().first().text();
-    console.log("indexChildToDelete");
-    console.log(indexChildToDelete);
-
-    //Update num in children
-    grandFather.children().forEach(
-        (li, index) =>
-        {
-            //It's an element of array and it's after the child
-            if(li.children().length === 2 && index > indexChildToDelete)
-            {
-                //grandFather[index].children().first().
-            }
-        }
-    );
-
 };
