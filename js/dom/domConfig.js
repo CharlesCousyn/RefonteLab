@@ -428,7 +428,11 @@ class ConfigEditor
                         {
                             jsonString += "\""+value+"\",";
                         }
-                        else if(NUMBER || BOOLEAN)
+                        else if(NUMBER)
+                        {
+                            jsonString += parseInt(value)+",";
+                        }
+                        else if(BOOLEAN)
                         {
                             jsonString += value+",";
                         }
@@ -439,9 +443,13 @@ class ConfigEditor
                     }
                     else
                     {
-                        if(NUMBER || BOOLEAN)
+                        if(BOOLEAN)
                         {
                             jsonString += "\""+name+"\":"+value+",";
+                        }
+                        else if(NUMBER)
+                        {
+                            jsonString += "\""+name+"\":"+parseInt(value)+",";
                         }
                         else
                         {
