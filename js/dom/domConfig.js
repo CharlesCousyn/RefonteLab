@@ -355,6 +355,9 @@ class ConfigEditor
 
             $("#alertSuccess").attr("style", "display:;");
             $("#alertError").attr("style", "display:none;");
+            //Animation when succeed!
+            let speed = 750; // Durée de l'animation (en ms)
+            $('html, body').animate( { scrollTop: 0 }, speed );
 
             console.log(this.json);
             return false;
