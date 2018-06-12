@@ -235,24 +235,23 @@ class ConfigEditor
                     treeString += "<li class='w3-row w3-padding-large'>";
                     treeString += "<label class='w3-col s5 m4 l3'>" + key + "</label>";
                     treeString += "<input type='hidden' name='type' value='"+format.type+"'/>";
-                    treeString += "<input class='w3-input w3-border w3-col m4 l4 fromFormProvider' name='"+key+"' id='" + idSimpleAttribute + "' type='number' value='"+value+"'"+ (required ? "required":"");
 
-                    //Create the regular expression for the field
-                    let valuesRegExp = "";
+                    //Handle possibles values
                     if(format.values !== undefined)
                     {
+                        treeString += "<select name='"+key+"' "+(required ? "required":"")+">";
+                        treeString += "<option disabled value=''></option>";
                         format.values.forEach((elem)=>
                         {
-                            valuesRegExp += elem+"|";
+                            let isSelected = (value === elem ? "selected" : "");
+                            treeString += "<option value='" + elem + "' "+isSelected+">" + elem + "</option>";
                         });
-                        valuesRegExp = valuesRegExp.substring(0, valuesRegExp.length - 1);
+                        treeString += "</select>";
                     }
-                    if(valuesRegExp !== "")
+                    else
                     {
-                        treeString += " pattern = '"+valuesRegExp+"' title='La valeur doit être dans la liste suivante: "+format.values.toString()+"'";
+                        treeString += "<input class='w3-input w3-border w3-col m4 l4 fromFormProvider' name='"+key+"' id='" + idSimpleAttribute + "' type='number' value='"+value+"'"+ (required ? "required":"")+"/>";
                     }
-
-                    treeString += "/>";
                     treeString += deleteButtonSimpleElement;
                     treeString += "</li>";
                 }
@@ -262,24 +261,23 @@ class ConfigEditor
                     treeString += "<li class='w3-row w3-padding-large'>";
                     treeString += "<label class='w3-col s5 m4 l3'>" + key + "</label>";
                     treeString += "<input type='hidden' name='type' value='"+format.type+"'/>";
-                    treeString += "<input class='w3-input w3-border w3-col m4 l4 fromFormProvider' name='"+key+"' id='" + idSimpleAttribute + "' type='text' value='"+value+"'"+ (required ? "required":"");
 
-                    //Create the regular expression for the field
-                    let valuesRegExp = "";
+                    //Handle possibles values
                     if(format.values !== undefined)
                     {
+                        treeString += "<select name='"+key+"' "+(required ? "required":"")+">";
+                        treeString += "<option value=''></option>";
                         format.values.forEach((elem)=>
                         {
-                            valuesRegExp += elem+"|";
+                            let isSelected = (value === elem ? "selected" : "");
+                            treeString += "<option value='" + elem + "' "+isSelected+">" + elem + "</option>";
                         });
-                        valuesRegExp = valuesRegExp.substring(0, valuesRegExp.length - 1);
+                        treeString += "</select>";
                     }
-                    if(valuesRegExp !== "")
+                    else
                     {
-                        treeString += " pattern = '"+valuesRegExp+"' title='La valeur doit être dans la liste suivante: "+format.values.toString()+"'";
+                        treeString += "<input class='w3-input w3-border w3-col m4 l4 fromFormProvider' name='"+key+"' id='" + idSimpleAttribute + "' type='text' value='"+value+"'"+ (required ? "required":"")+ "/>";
                     }
-
-                    treeString += "/>";
                     treeString += deleteButtonSimpleElement;
                     treeString += "</li>";
                 }

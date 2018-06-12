@@ -19,14 +19,14 @@
                 "Description": "Relay 1",
                 "Enable": false,
                 "Name": "RelayTEst",
-                "SensorType": "Relay"
+                "SensorType": "DIGITAL"
               },
               {
                 "Address": 42,
                 "Description": "Relay56461",
                 "Enable": false,
                 "Name": "RelayTssssst",
-                "SensorType": "Relsssay"
+                "SensorType": "DIGITAL"
               }
             ]
           },
@@ -42,7 +42,7 @@
                 "Description": "Relay 67",
                 "Enable": true,
                 "Name": "RelayTEst",
-                "SensorType": "Relay"
+                "SensorType": "DIGITAL"
               }
             ]
           }
@@ -131,14 +131,14 @@
               "Description": "Relay 1",
               "Enable": false,
               "Name": "RelayTEst",
-              "SensorType": "Relay"
+              "SensorType": "DIGITAL"
             },
             {
               "Address": 42,
               "Description": "Relay56461",
               "Enable": false,
               "Name": "RelayTssssst",
-              "SensorType": "Relsssay"
+              "SensorType": "DIGITAL"
             }
           ]
         },
@@ -153,7 +153,7 @@
               "Description": "Relay 67",
               "Enable": true,
               "Name": "RelayTEst",
-              "SensorType": "Relay"
+              "SensorType": "DIGITAL"
             }
           ]
         }
