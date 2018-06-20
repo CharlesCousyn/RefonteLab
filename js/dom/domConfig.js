@@ -521,10 +521,26 @@ let addElementToUl = function(button, formatIndex)
 let deleteElement = function(button)
 {
     let idElement = button.prev().text();
-    if(confirm("Etes vous sûr de supprimer l'élément "+idElement+" ?"))
+    if(idElement === "")
     {
-        button.parent().remove();
+        idElement = button.siblings("label").text();
     }
+
+    swal(
+        {
+            title: "Etes vous sûr de vouloir supprimer l'élément "+idElement+" ?",
+            text: "Une fois supprimé, vous ne pourrez plus y accéder",
+            icon: "warning",
+            buttons: ["Annuler", "Oui, je suis sûr"],
+            dangerMode: true,
+        }
+    )
+        .then((willDelete) => {
+            if (willDelete)
+            {
+                button.parent().remove();
+            }
+        });
 };
 
 
